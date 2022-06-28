@@ -2,14 +2,14 @@ fetch ( "http://localhost:3000/api/products")
    .then((res) => res.json())
    .then((resp) => {
       console.log(resp)
-      return displayAllProducts(resp)
+      return addProducts(resp)
    })
   
 
-function displayAllProducts(resp) {
-   const id = resp[0]._id
-   const imageUrl = resp[0].imageUrl
-   const altTxt = resp[0].altTxt
+function addProducts(data) {
+   const id = data[0]._id
+   const imageUrl = data[0].imageUrl
+   const altTxt = data[0].altTxt
    const image = makeImage(imageUrl, altTxt)
    
    const products = makeProducts(id)
@@ -20,7 +20,7 @@ function displayAllProducts(resp) {
 
 
 function makeProducts(id) {
-   const products =document.createElement("a")
+const products =document.createElement("a")
 products.href = "./product.html?id=" + id
 return products
 }
@@ -29,8 +29,7 @@ function appendChildren(products, article) {
    if (items != null) {
       items.appendChild(products)
       items.appendChild(article)
-}
-}
+}}
 function makeImage(imageUrl, altTxt) {
    const image = document.createElement("img")
    image.src = imageUrl
@@ -39,12 +38,11 @@ function makeImage(imageUrl, altTxt) {
 }
 function makeArticle() {
 const article = document.createElement("article")
-const image =makeImage()
 const h3 =makeH3()
 const paragraph = makeParagraph()
-article.appendChild(image)
-article.appendChild(h3)
-article.appendChild(paragraph)
+// article.appendChild(image)
+// article.appendChild(h3)
+// article.appendChild(paragraph)
 console.log(article)
 return article
 }
@@ -57,4 +55,4 @@ function makeParagraph() {
 
 }
 
-for(i = 0; i<8;i++) {resp[i].name}
+// for(i = 0; i<8;i++) {resp[i].name}
