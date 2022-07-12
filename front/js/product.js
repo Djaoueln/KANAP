@@ -55,14 +55,15 @@ function setInfo (product)
 
 
 
-// function colorProduct(colors){
-//    colors.forEach((color) => {
-//     const option = document.createElement("option")
-//     const select = document.getElementById("colors");
-//     console.log(option)
-//     option.value = color
-//     option.textContent = color
-//     select.appendChild(option)
-//    });
-// } 
-
+const button = document.getElementById("addToCart")
+button.addEventListener("click", (e) =>{
+ const colors = document.getElementById("colors").value
+ const quantity = document.getElementById("quantity").value
+ const data = {
+  id: id,
+  color: colors,
+  quantity : Number(quantity),
+ }
+ localStorage.setItem(id, JSON.stringify (data))
+ window.location.href ="cart.html"
+})
