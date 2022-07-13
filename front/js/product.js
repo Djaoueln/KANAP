@@ -1,3 +1,5 @@
+
+
 let str = window.location.href;
 let url = new URL(str);
 let search_params = new URLSearchParams(url.search); 
@@ -8,19 +10,21 @@ if(search_params.has('id')) {
   .then((resp) => addProducts(resp))
 }
 
+
   
 
 
 
-function addProducts(kanap){
+function addProducts(kanap)
+{
   const {imageUrl, altTxt, colors} = kanap;
    setImage(imageUrl, altTxt);
    setInfo (kanap);
    setColors (colors);
-
 }
 
-function setImage(imageUrl, altTxt){
+function setImage(imageUrl, altTxt)
+{
  const img = document.createElement("img");
  img.src = imageUrl
  img.alt = altTxt
@@ -29,16 +33,18 @@ function setImage(imageUrl, altTxt){
 
 function setColors (colors)
 {
-  colors.forEach((color) => {
+  colors.forEach((color) => 
+  {
     const option = document.createElement("option")
     const select = document.getElementById("colors");
 
     option.value = color
     option.textContent = color
     
-    select.appendChild(option)
-   });
+    select.appendChild(option) 
+  })
 }
+
 function setInfo (product)
 {
    document.getElementById("title").innerText = product.name;
@@ -47,23 +53,33 @@ function setInfo (product)
 }
 
 
+const local = JSON.parse(localStorage.getItem("user"));
+if (localStorage.getItem ("color-select", "itemQuantity", "id", "title", "price") != null);
 
-
-
-
-
-
-
-
-const button = document.getElementById("addToCart")
-button.addEventListener("click", (e) =>{
- const colors = document.getElementById("colors").value
- const quantity = document.getElementById("quantity").value
- const data = {
-  id: id,
-  color: colors,
-  quantity : Number(quantity),
+addToCart.onclick = () =>
+ {
+  const user = 
+    {
+      color: colors.value,
+      quantity: Number(quantity.value),
+    }
+    localStorage.setItem("choice", JSON.stringify(user))
+    // window.location.href ="cart.html"
  }
- localStorage.setItem(id, JSON.stringify (data))
- window.location.href ="cart.html"
-})
+
+
+
+
+
+// const button = document.getElementById("addToCart")
+// button.addEventListener("click", (e) =>{
+//  const colors = document.getElementById("colors").value
+//  const quantity = document.getElementById("quantity").value
+//  const data = {
+//   id: id,
+//   color: colors,
+//   quantity : Number(quantity),
+//  }
+//  localStorage.setItem(id, JSON.stringify (data))
+//  window.location.href ="cart.html"
+// })
