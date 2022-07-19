@@ -1,5 +1,4 @@
-
-
+//Récupération de l'id depuis l'url
 let str = window.location.href;
 let url = new URL(str);
 let search_params = new URLSearchParams(url.search); 
@@ -14,14 +13,15 @@ if(search_params.has('id')) {
   
 
 
-
+// Affichage du produit
 function addProducts(kanap)
-{
+{  
   const {imageUrl, altTxt, colors} = kanap;
    setImage(imageUrl, altTxt);
    setInfo (kanap);
    setColors (colors);
 }
+
 
 function setImage(imageUrl, altTxt)
 {
@@ -52,20 +52,75 @@ function setInfo (product)
    document.getElementById("description").innerText = product.description;
 }
 
+function setCart(cart){
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+function getCart(){
+  const local = JSON.parse(localStorage.getItem("cart"));
+return local
+}
+function addCart(item){
+  const cart = getcart();
+  const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+  const index = cart.findIndex(IsItemInCart)
+  if (index != undefined){
+      index.quantity++;
+  }else {
+    item.quantity = 1
+    cart.push(item);
 
-const local = JSON.parse(localStorage.getItem("user"));
-if (localStorage.getItem ("color-select", "itemQuantity", "id", "title", "price") != null);
-
-addToCart.onclick = () =>
- {
-  const user = 
-    {
-      color: colors.value,
-      quantity: Number(quantity.value),
-    }
-    localStorage.setItem("choice", JSON.stringify(user))
-    // window.location.href ="cart.html"
+  }
+  setCart(cart);
+}
+function revomeCart(item)
+{
+  const cart = getCart();
+  cart = cart.filter(p => p.id == item.id);
+  setCart(cart);
+}
+function Changequantity(item, quantity)
+{
+  const cart = getcart();
+  const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+  const index = cart.findIndex(IsItemInCart);
+  if (index != undefined){
+      item.quantity += quantity;
+      if(index.quantity <= 0){
+        revomeCart(index);
+      }
+  
+  else {
+      setCart(cart);
+  }
  }
+}
+
+function getNumberProduct()
+{
+  const cart = getCart();
+  const number = 0;
+  for(let item of cart){
+      number += item.quantity;
+  }
+}
+
+// // // Ajouté un article au panier
+
+// const local = JSON.parse(localStorage.getItem("cart"));
+// if (localStorage.getItem ("color-select", "itemQuantity", "id", "title", "price") != null);
+
+// addToCart.onclick = () =>
+//  {
+//   const user = 
+//     {
+//       color: colors.value,
+//       quantity: Number(quantity.value),
+
+       
+//     }
+//     localStorage.setItem("cart", JSON.stringify(user))
+//   //  window.location.href ="cart.html"
+//  }
 
 
 
@@ -83,3 +138,5 @@ addToCart.onclick = () =>
 //  localStorage.setItem(id, JSON.stringify (data))
 //  window.location.href ="cart.html"
 // })
+
+// 

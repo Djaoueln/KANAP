@@ -3,7 +3,7 @@ fetch ( "http://localhost:3000/api/products")
    .then((res) => res.json())
    .then((resp) => displayAllProducts(resp))
 
- 
+ //Création des article
 function displayAllProducts(resp) 
    {
       let items = document.getElementById("items");
