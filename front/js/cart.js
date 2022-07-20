@@ -1,8 +1,5 @@
-fetch ( "http://localhost:3000/api/products")
-   .then((res) => res.json())
-   .then((resp) => console.log(resp))
 
-
+// création du html 
 
 function htmlProductCart(article) {
   let htlmCart = '<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">';
