@@ -1,57 +1,54 @@
-addToCart.onclick = () =>
-{const cart = 
-  {
-    color: colors.value,
-    quantity: Number(quantity.value),
-    id: search_params.get('id'),      
-  }
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
- class Kanap {
+ export class Cart {
      constructor(){
-         const local =localStorage.getItem("cart");
-             if(local == null)
+         let cart =localStorage.getItem("cart");
+             if(cart == null)
                 {
-                 this.local =[];
+                 this.cart =[];
                 }
              else
                  {
-                   this.local = JSON.parse(local)
+                   this.cart = JSON.parse(cart)
                  }
                }
-
+      
+       save()       
+             {
+               localStorage.setItem("cart", JSON.stringify(this.cart));
+             }
+             
      add(item)
            {
-         const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-         const index = this.cart.findIndex(IsItemInCart)
-         if (index != undefined){
-             index.quantity++;
-             
-         }else {
+            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+            const index = this.cart.findIndex(isItemInCart);
+         if (item != undefined)
+              {
+            item.quantity++;
+              }
+         else {
            item.quantity = 1;
            this.cart.push(item);
          }
-         this.set();
+         this.save();
            }
       
-    revome(item)
+    remove(item)
             {
      this.cart = this.cart.filter(p => p.id == item.id);
-     this.set();
+     this.save();
             }
     
-     Changequantity(item, quantity)
+     changeQuantity(item, quantity)
             {
-              const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-              const index = this.cart.findIndex(IsItemInCart);
+              const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+              const index = this.cart.findIndex(isItemInCart);
               if (index != undefined){
                   item.quantity += quantity;
                   if(index.quantity <= 0){
-                    this.revome(index);
+                    this.remove(index);
                   }
              
               else {
-                  this.set();
+                  this.save();
               }
              }
             }

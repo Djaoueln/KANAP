@@ -1,3 +1,5 @@
+import { Cart } from './localStorageCart.js'
+
 //Récupération de l'id depuis l'url
 let str = window.location.href;
 let url = new URL(str);
@@ -52,6 +54,18 @@ function setInfo (product)
    document.getElementById("description").innerText = product.description;
 }
 
+addToCart.onclick = () => {
+let myCart = new Cart()
+
+const item = 
+  {
+    color: colors.value,
+    quantity: Number(quantity.value),
+    id: search_params.get('id'),      
+  }
+myCart.add(item)
+console.log(myCart)
+}
 
 
 
@@ -74,87 +88,25 @@ function setInfo (product)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// //...........................localStorage
-// // récupération du localStorage
-
-// addToCart.onclick = () =>
-// {const cart = 
+// addToCart.onclick = () => {
+//   const item = 
 //   {
 //     color: colors.value,
 //     quantity: Number(quantity.value),
-//     id: search_params.get('id'),
-   
-          
+//     id: search_params.get('id'),      
 //   }
-//   localStorage.setItem("cart", JSON.stringify(cart));
-// }
-// function getCart(){
-//   const local = JSON.parse(localStorage.getItem("cart"));
-// return local
-// }
-// function addCart(item){
-//   const cart = getcart();
-//   const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-//   const index = cart.findIndex(IsItemInCart)
-//   if (index != undefined){
-//       index.quantity++;
-//   }else {
-//     item.quantity = 1
-//     cart.push(item);
-
-//   }
-//   setCart(cart);
-// }
-// function revomeCart(item)
+// let productInLocalStorage = JSON.parse(localStorage.getItem(cart))
+// if(productInLocalStorage)
 // {
-//   const cart = getCart();
-//   cart = cart.filter(p => p.id == item.id);
-//   setCart(cart);
+//   productInLocalStorage.push(item);
+//   localStorage.setItem("cart", JSON.stringify(productInLocalStorage));
 // }
-// function Changequantity(item, quantity)
+// else
 // {
-//   const cart = getcart();
-//   const IsItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-//   const index = cart.findIndex(IsItemInCart);
-//   if (index != undefined){
-//       item.quantity += quantity;
-//       if(index.quantity <= 0){
-//         revomeCart(index);
-//       }
-  
-//   else {
-//       setCart(cart);
-//   }
-//  }
+//   productInLocalStorage = [];
+//   productInLocalStorage.push(item);
+//   localStorage.setItem("cart", JSON.stringify(productInLocalStorage));
 // }
 
-// function getNumberProduct()
-// {
-//   const cart = getCart();
-//   const number = 0;
-//   for(let item of cart){
-//       number += item.quantity;
-//   }
 // }
 
-// Ajout d'un article au panier
-
-  // const local = JSON.parse(localStorage.getItem("cart"));
-  // if (localStorage.getItem ("color-select", "itemQuantity", "id", "title", "price") != null);
-
- 
-    
-  //     localStorage.setItem("cart", JSON.stringify(user))
-  //     window.location.href ="cart.html"
-  //  }
