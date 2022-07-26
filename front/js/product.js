@@ -18,7 +18,7 @@ if(search_params.has('id')) {
 // Affichage du produit
 function addProducts(kanap)
 {  
-  const {imageUrl, altTxt, colors} = kanap;
+  const {imageUrl, altTxt, colors,} = kanap;
    setImage(imageUrl, altTxt);
    setInfo (kanap);
    setColors (colors);
@@ -48,7 +48,7 @@ function setColors (colors)
 }
 
 function setInfo (product)
-{
+{  
    document.getElementById("title").innerText = product.name;
    document.getElementById("price").innerText = product.price + " ";
    document.getElementById("description").innerText = product.description;
@@ -61,7 +61,9 @@ const item =
   {
     color: colors.value,
     quantity: Number(quantity.value),
-    id: search_params.get('id'),      
+    id: search_params.get('id'),  
+  name : title,
+  price : price
   }
 myCart.add(item)
 console.log(myCart)
