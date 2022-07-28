@@ -62,8 +62,8 @@ const item =
     color: colors.value,
     quantity: Number(quantity.value),
     id: search_params.get('id'),  
-  name : title,
-  price : price
+  name : title.innerText,
+  price : price.innerText,
   }
 myCart.add(item)
 console.log(myCart)
