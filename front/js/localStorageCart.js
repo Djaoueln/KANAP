@@ -38,26 +38,32 @@
                 console.log("Le produit n'existe pas !");
             }
 
-            // Ici j'additionne simplement le prix des canapés et je stock le résultat dans "totalPrice"
+            //j'additionne simplement le prix des canapés et je stock le résultat dans "totalPrice"
             this.cart.totalPrice += Number(item.price);
 
             this.save()
         }
       
-    remove(item)
+    delete(item)
         {
-            this.cart = this.cart.filter(p => p.id == item.id);
+            this.cart = this.cart.filter(p => p.id == item.id && p.color == item.color);
             this.save();
+            console.log("Le produit a été supprimé !");
         }
-    
-    changeQuantity(item, quantity)
+    deleteProduct(){
+
+    }
+        
+    updateQuantity(item, quantity)
         {
+           
             const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
             const index = this.cart.findIndex(isItemInCart);
+            
                 if (index != undefined){
                     item.quantity += quantity;
                     if(index.quantity <= 0){
-                    this.remove(index);
+                    this.delete(index);
                     }
                 
                 else {

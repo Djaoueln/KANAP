@@ -11,10 +11,6 @@ if(search_params.has('id')) {
   .then((resp) => addProducts(resp))
 }
 
-
-  
-
-
 // Affichage du produit
 function addProducts(kanap)
 {  
@@ -62,11 +58,9 @@ const item =
     color: colors.value,
     quantity: Number(quantity.value),
     id: search_params.get('id'),  
-  name : title.innerText,
-  price : price.innerText,
   }
 myCart.add(item)
-console.log(myCart)
+
 }
 
 
