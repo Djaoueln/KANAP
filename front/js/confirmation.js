@@ -19,7 +19,7 @@ function getOrderId()
 
 function displayOrderId(orderId) 
        {
-         const orderIdElement = document.getElementById("orderId");
+          const orderIdElement = document.getElementById("orderId");
           orderIdElement.innerText = orderId;
        }  
 
