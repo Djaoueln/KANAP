@@ -1,9 +1,12 @@
 
+import { Cart } from './localStorageCart.js'
+
 async function getProductById(id){
     const resp = await fetch (`http://localhost:3000/api/products/${id}`)
     const json = await resp.json();
     return json
     }
+
 /**
  Cette methode permet de récupèrer les produits qui sont dans le localstorage
  */
@@ -14,9 +17,17 @@ function getProductsCart()
     products = JSON.parse(localStorage.getItem('cart'));
     // Si il y a bien dans products des items
     if(products) {
-        displayAllProductsCart(products);
+        displayAllProductsCart(products).then(
+           function () {
+            setTotalPrice(products.totalPrice);
+            handlerDelete()
+            changeQuantity()
+
+          }
+        );
         // products.totalPrice est le prix total des canapés 
-        setTotalPrice(products.totalPrice);
+        
+        // changeQuantity();
        
         
     }
@@ -41,12 +52,14 @@ function setTotalPrice(totalPrice)
         art.color = resp.products[i].color;
         art.quantity = resp.products[i].quantity;
         items.innerHTML += htmlProductCart (art);
-        setTotalPrice(art.price)
+
+        setTotalPrice(art.price);
+
     }
  }
 
 function htmlProductCart(article) {
-    let htlmCart = '<article class="cart__item" data-id="' +article.id+ '" data-color="' +article.color+ '">';
+    let htlmCart = '<article class="cart__item" data-id="' +article._id+ '" data-color="' +article.color+ '">';
         htlmCart += '<div class="cart__item__img">';   
         htlmCart +=  '<img src="'+article.imageUrl+'" alt="' +article.altTxt+ '"></div>';
         htlmCart += '<div class="cart__item__content">';
@@ -69,6 +82,74 @@ function htmlProductCart(article) {
         
     return htlmCart
 }
+
+
+// lance la fonction
+getProductsCart();
+
+function changeQuantity() {
+    const items = document.querySelectorAll(".itemQuantity");
+    items.forEach((item) => {
+        item.addEventListener("change", (e) => {
+            const inputValue = e.target.value;
+            const id = item.dataset.id;
+            console.log
+            const color = item.dataset.color;
+            const quantity = e.target.value;
+            let myCart = new Cart();
+            const product = {id, color, quantity, inputValue};
+            myCart.updateQuantity(product);
+            // Mise à jour du localStorage
+            let itemsStr = JSON.stringify(updateQuantity);
+            localStorage.setItem("cart", itemsStr);
+            // Refresh de la page Panier
+            location.reload();
+        }
+        )
+    }
+    )
+}
+function deleteItem(event)
+{
+const el = event.target;
+const item = el.closest(".cart__item")
+console.log("item", item)
+console.log("el", el)
+}
+
+function handlerDelete ()
+{
+    const deleteBtn = document.querySelectorAll(".deleteItem");
+    deleteBtn.forEach((btn) => {
+        btn.addEventListener("click", e => deleteItem(e))
+     })} 
+     
+     
+     
+    
+//                 e.preventDefault();
+           
+            
+//            let myCart = new Cart()
+//             let cart = Cart.filter(
+//             (element) => !(element.id === deleteId && element.color === deleteColor)
+//             );
+//             console.log(cart);
+//             // mise à jour du localStorage
+//             localStorage.setItem("cart", JSON.stringify(cart));
+//             // Refresh de la page Panier
+//             location.reload();
+//             alert("Le produit a bien été supprimé");
+
+
+
+
+//         }
+//         )
+//     }
+//     )
+// }
+
 
 const submitButton = document.getElementById('order');
 submitButton.addEventListener('click', (e) => submitForm(e));
@@ -170,5 +251,3 @@ function getIdsFromCache()
             }
             return ids;
        }
-// lance la fonction
-getProductsCart();

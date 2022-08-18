@@ -3,17 +3,13 @@
 
         constructor(){
             let cart = localStorage.getItem("cart");
-
         if(!cart)
             {
                 this.cart = { products: [], totalPrice: 0 };
-
             }
         else
             {
-            
             this.cart = JSON.parse(cart)
-
             }
         }
       
@@ -25,7 +21,6 @@
     add(item) 
         {
             const isItemInCart = this.cart.products.findIndex(p => (p.color == item.color) && (p.id == item.id));
-
             if(isItemInCart >= 0) { 
 
                 const exsitingProduct = this.cart.products[isItemInCart];
@@ -46,14 +41,28 @@
       
     delete(item)
         {
-            this.cart = this.cart.filter(p => p.id == item.id && p.color == item.color);
+            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+            const index = (this.cart).findIndex({isItemInCart});
+            if(index >= 0) {
+                this.cart.products.splice(index, 1);
+                this.cart.totalPrice -= Number(item.price);
+            }
+
             this.save();
             console.log("Le produit a été supprimé !");
         }
-    deleteProduct(){
+    deleteItems()
+        {
+            
+            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
+            const index = (this.cart).findIndex(isItemInCart);
+            if(index >= 1) {
+                this.cart.splice(index, 1);
+                this.save();
+                console.log("Le produit a été supprimé !");
+            }
+        }
 
-    }
-        
     updateQuantity(item, quantity)
         {
            
