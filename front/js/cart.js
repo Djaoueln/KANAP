@@ -20,9 +20,8 @@ function getProductsCart()
         displayAllProductsCart(products).then(
            function () {
             setTotalPrice(products.totalPrice);
-            handlerDelete()
-            changeQuantity()
-
+            handlerDelete(products)
+            handlerQuantity(products)
           }
         );
         // products.totalPrice est le prix total des canapés 
@@ -86,69 +85,56 @@ function htmlProductCart(article) {
 
 // lance la fonction
 getProductsCart();
+function changeQuantity(event)
+{
+const el = event.target;
+const item = el.closest(".cart__item")
+const id = item.dataset.id;
+console.log("id", id)
+const color = item.dataset.color;
+const quantity = el.closest(".itemQuantity")
+const valueQuantity = quantity.value;
+console.log("number", valueQuantity)
+let myCart = new Cart();
+const product = {id, color, quantity };
+myCart.updateQuantity(product);
+// Refresh de la page Panier
+location.reload();
+}
 
-function changeQuantity() {
+function handlerQuantity() {
     const items = document.querySelectorAll(".itemQuantity");
     items.forEach((item) => {
-        item.addEventListener("change", (e) => {
-            const inputValue = e.target.value;
-            const id = item.dataset.id;
-            console.log
-            const color = item.dataset.color;
-            const quantity = e.target.value;
-            let myCart = new Cart();
-            const product = {id, color, quantity, inputValue};
-            myCart.updateQuantity(product);
-            // Mise à jour du localStorage
-            let itemsStr = JSON.stringify(updateQuantity);
-            localStorage.setItem("cart", itemsStr);
-            // Refresh de la page Panier
-            location.reload();
-        }
-        )
+        item.addEventListener("change", (e) => changeQuantity(e)) 
     }
     )
 }
+
+
 function deleteItem(event)
 {
 const el = event.target;
 const item = el.closest(".cart__item")
 console.log("item", item)
 console.log("el", el)
+let myCart = new Cart();
+myCart.delete(item.dataset.id, item.dataset.color);
+// Refresh de la page Panier
+//  location.reload(); 
 }
+
+
 
 function handlerDelete ()
 {
     const deleteBtn = document.querySelectorAll(".deleteItem");
     deleteBtn.forEach((btn) => {
         btn.addEventListener("click", e => deleteItem(e))
-     })} 
-     
-     
-     
-    
-//                 e.preventDefault();
-           
-            
-//            let myCart = new Cart()
-//             let cart = Cart.filter(
-//             (element) => !(element.id === deleteId && element.color === deleteColor)
-//             );
-//             console.log(cart);
-//             // mise à jour du localStorage
-//             localStorage.setItem("cart", JSON.stringify(cart));
-//             // Refresh de la page Panier
-//             location.reload();
-//             alert("Le produit a bien été supprimé");
+        }
+    )
+}
 
 
-
-
-//         }
-//         )
-//     }
-//     )
-// }
 
 
 const submitButton = document.getElementById('order');

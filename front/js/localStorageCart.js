@@ -39,40 +39,28 @@
             this.save()
         }
       
-    delete(item)
+    delete(itemId, itemColor)
         {
-            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-            const index = (this.cart).findIndex({isItemInCart});
-            if(index >= 0) {
-                this.cart.products.splice(index, 1);
-                this.cart.totalPrice -= Number(item.price);
+            const isItemInCart = this.cart.products.findIndex(p => (p.color == itemColor) && (p.id == itemId));
+            console.log("index", isItemInCart)
+            if(isItemInCart >= 0) {
+                this.cart.products.splice(isItemInCart, 1);
+                // this.cart.totalPrice -= Number(item.price);
             }
 
             this.save();
             console.log("Le produit a été supprimé !");
         }
-    deleteItems()
-        {
-            
-            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-            const index = (this.cart).findIndex(isItemInCart);
-            if(index >= 1) {
-                this.cart.splice(index, 1);
-                this.save();
-                console.log("Le produit a été supprimé !");
-            }
-        }
 
-    updateQuantity(item, quantity)
+    updateQuantity(itemColor, itemId, quantity)
         {
-           
-            const isItemInCart = (item, id, colors) =>  (item.id = id) && (item.colors = colors);
-            const index = this.cart.findIndex(isItemInCart);
+            const isItemInCart = this.cart.products.findIndex(p => (p.color == itemColor) && (p.id == itemId));
             
-                if (index != undefined){
+            
+                if (isItemInCart != undefined){
                     item.quantity += quantity;
                     if(index.quantity <= 0){
-                    this.delete(index);
+                    this.delete(isItemInCart);
                     }
                 
                 else {
