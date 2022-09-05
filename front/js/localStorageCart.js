@@ -24,18 +24,19 @@
             if(isItemInCart >= 0) { 
 
                 const exsitingProduct = this.cart.products[isItemInCart];
-                exsitingProduct.quantity += 1;
+                exsitingProduct.quantity += Number(quantity.value);
                 console.log("Le produit existe déjà !");
-
+                console.log("quantity", exsitingProduct)
+                
             } else {
-                item.quantity = 1;
+                item.quantity = Number(quantity.value);
                 this.cart.products.push(item);
                 console.log("Le produit n'existe pas !");
             }
 
             //j'additionne simplement le prix des canapés et je stock le résultat dans "totalPrice"
             this.cart.totalPrice += Number(item.price);
-
+            console.log("item.price", item.price)
             this.save()
         }
       

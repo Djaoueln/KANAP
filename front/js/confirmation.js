@@ -9,7 +9,7 @@ function getOrderId()
      if(search_params.has('orderId')) 
         {
           let orderId = search_params.get('orderId');
-          fetch (`http://localhost:3000/api/products/${orderId}`)
+          fetch (`http://localhost:3000/api/${orderId}`)
           .then((response) => response.json())
           .then((resp) => displayOrderId(resp))
         } 

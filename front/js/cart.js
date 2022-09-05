@@ -24,11 +24,6 @@ function getProductsCart()
             handlerQuantity(products)
           }
         );
-        // products.totalPrice est le prix total des canapés 
-        
-        // changeQuantity();
-       
-        
     }
 }
 
@@ -58,28 +53,27 @@ function setTotalPrice(totalPrice)
  }
 
 function htmlProductCart(article) {
-    let htlmCart = '<article class="cart__item" data-id="' +article._id+ '" data-color="' +article.color+ '">';
-        htlmCart += '<div class="cart__item__img">';   
-        htlmCart +=  '<img src="'+article.imageUrl+'" alt="' +article.altTxt+ '"></div>';
-        htlmCart += '<div class="cart__item__content">';
-        htlmCart += '<div class="cart__item__content__description">';
-        htlmCart +=  '<h2>' +article.name+ '</h2>';
-        htlmCart += '<p>' +article.color+ '</p>';
-        htlmCart += '<p>'+article.price+'€</p>';
-        htlmCart +=  '</div>';
-        htlmCart += '<div class="cart__item__content__settings">';
-        htlmCart += '<div class="cart__item__content__settings__quantity">';
-        htlmCart +=  '<p>Qté : </p>';
-        htlmCart +=  '<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="' +article.quantity+ '">';
-        htlmCart +=  '</div>';
-        htlmCart +=  '<div class="cart__item__content__settings__delete">';
-        htlmCart += '<p class="deleteItem">Supprimer</p>';
-        htlmCart +=  '</div>';
-        htlmCart +=  '</div>';
-        htlmCart += '</div>';
-        htlmCart += '</article>';
-        
-    return htlmCart
+    return `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">
+           <div class="cart__item__img">
+              <img src="${article.imageUrl}" alt="${article.altTxt}">
+           </div>
+           <div class="cart__item__content">
+           <div class="cart__item__content__description">
+              <h2>${article.name}</h2>
+              <p>${article.color}</p>
+              <p>${article.price}</p>
+           </div>
+           <div class="cart__item__content__settings">
+        <div class="cart__item__content__settings__quantity">
+          <p>Qté : </p>
+          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${article.quantity}">
+        </div>
+        <div class="cart__item__content__settings__delete">
+          <p class="deleteItem">Supprimer</p>
+        </div>
+      </div>
+    </div>
+  </article>`      
 }
 
 
@@ -120,7 +114,7 @@ console.log("el", el)
 let myCart = new Cart();
 myCart.delete(item.dataset.id, item.dataset.color);
 // Refresh de la page Panier
-//  location.reload(); 
+ location.reload(); 
 }
 
 
@@ -151,30 +145,23 @@ function submitForm(e) {
         if (emailValidation()) return;
 
 
-        const body = makeRequestBody();
+const body = makeRequestBody();
         fetch('http://localhost:3000/api/products/order', 
              {
                 method: 'POST',
                 body: JSON.stringify(body),
-                headers: {
+                headers: 
+                {
                     'Content-Type': 'application/json'
-
                 }})
-                
                 .then((res) => res.json())
                 .then((resp) => 
                 { 
                     const orderId = resp.orderId;
-                    window.location.href = "confirmation.html" + "?orderId=" + orderId;
+                    // window.location.href = "confirmation.html" + "?orderId=" + orderId;
                     return console.log(resp)
                 })
-                .catch((err) => console.log(err))
-
-
-                    
-                
-
-                
+                .catch((err) => console.log(err))              
     }
      // validation
 function inValidateForm()
