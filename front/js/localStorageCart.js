@@ -1,11 +1,11 @@
 
- export class Cart {
+ export class localStorageCart {
 
         constructor(){
             let cart = localStorage.getItem("cart");
         if(!cart)
             {
-                this.cart = { products: [], totalPrice: 0 };
+                this.cart = { products:[]};
             }
         else
             {
@@ -33,10 +33,6 @@
                 this.cart.products.push(item);
                 console.log("Le produit n'existe pas !");
             }
-
-            //j'additionne simplement le prix des canapés et je stock le résultat dans "totalPrice"
-            this.cart.totalPrice += Number(item.price);
-            console.log("item.price", item.price)
             this.save()
         }
       
@@ -56,14 +52,12 @@
     updateQuantity(itemColor, itemId, quantity)
         {
             const isItemInCart = this.cart.products.findIndex(p => (p.color == itemColor) && (p.id == itemId));
-            
-            
                 if (isItemInCart != undefined){
-                    item.quantity += quantity;
-                    if(index.quantity <= 0){
+                    const item = this.cart.products[isItemInCart];
+                    item.quantity = Number(quantity);
+                    if(item.quantity <= 0){
                     this.delete(isItemInCart);
                     }
-                
                 else {
                     this.save();
                 }
@@ -99,44 +93,5 @@
 
 
 
- 
-  /**
-   * Exemple de ce qui y a dans l'object "cart" qui se trouve dans le localstorage
-   * 
-   * Pour pouvoir y accéder => this.cart.products puis faire un loop pour accéder à color, quantity, price, name, etc ...
-   * Pour accéder au prix total => this.cart.totalPrice
-   */
-//   {
-//     products: [
-//         {
-//             color: "pink",
-//             quantity: 1,
-//             id: "034707184e8e4eefb46400b5a3774b5f",
-//             price: 1999,
-//             name: "Kanap Thyoné",
-//             imageUrl: "http://localhost:3000/images/kanap07.jpeg",
-//             altTxt: "Photo d'un canapé rouge, deux places"
 
-//         },
-//         {
-//             color: "red",
-//             quantity: 10,
-//             id: "5558f5fg2gf5d4fg5f1d22226a3774b5f",
-//             price: 155,
-//             name: "Kanap en cuir",
-//             imageUrl: "http://localhost:3000/images/kanap06.jpeg",
-//             altTxt: "Photo d'un canapé rouge, deux places"
-//         },
-//         {
-//             etc...
-//         },
-//         {
-//             etc...
-//         }
-//     ],
-
-//     totalPrice: 9985 
-//   }
-  
-  
 

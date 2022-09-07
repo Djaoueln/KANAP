@@ -1,4 +1,4 @@
-import { Cart } from './localStorageCart.js'
+import { localStorageCart } from './localStorageCart.js'
 
 //Récupération de l'id depuis l'url
 let str = window.location.href;
@@ -51,7 +51,7 @@ function setInfo (product)
 }
 
 addToCart.onclick = () => {
-let myCart = new Cart()
+let myCart = new localStorageCart()
 
 const item = 
   {
