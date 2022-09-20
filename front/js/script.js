@@ -1,28 +1,33 @@
-// récupération des données de l'api
+        /* retrieve data from the api */
+        
 fetch ( "http://localhost:3000/api/products")
    .then((res) => res.json())
    .then((resp) => displayAllProducts(resp))
 
- //Création des article
+         /* Create articles */
+
 function displayAllProducts(resp) 
-   {
+    {
+      // Retrieve the div that will contain the articles
       let items = document.getElementById("items");
       items.innerHTML = '';  
+      // For each item
       for( let i = 0; i<resp.length;i++) 
       {
+      // Retrieve item data
       items.innerHTML += htmlProduct (resp[i]);
       }
    }
 
-// création du htlm de la page index
+         /* create the html of the index page */
+
 function htmlProduct(article) 
  {
-    let htlmA = '<a href="./product.html?id=' +article._id+ '">';
-    htlmA += '<article>';
-    htlmA +='<img src=" '+article.imageUrl+' " alt="' +article.altTxt+ '">';
-    htlmA += '<h3 class="productName">' +article.name+ '</h3>';
-    htlmA += '<p class="productDescription">' +article.description+ '</p>'; 
-    htlmA += '</article>'; 
-    htlmA += '</a>';
-    return htlmA;
+   return `<a href="./product.html?id=${article._id}">
+   <article>
+     <img src="${article.imageUrl}" alt="${article.altTxt}">
+     <h3 class="productName">${article.name}</h3>
+     <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
+   </article>
+ </a>`
  }

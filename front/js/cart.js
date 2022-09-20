@@ -1,10 +1,10 @@
-
 import { localStorageCart } from './localStorageCart.js'
-//* GLOBAL get item in local storage
 
+//* global get item in local storage
 let products = [];
     products = JSON.parse(localStorage.getItem('cart'));
-// envoi des données au serveur
+
+//* send data(product) to server */  
 async function getProductById(id)
    {
     const resp = await fetch (`http://localhost:3000/api/products/${id}`)
@@ -12,49 +12,54 @@ async function getProductById(id)
     return json
     }
 
-/**
- Cette methode permet de récupèrer les produits qui sont dans le localstorage
- */
+/** This method allows you to retrieve the products that are in the localstorage **/
+
 function getProductsCart()
 
 {
-    // Si il y a bien dans products des items
+    // If there are items in products
     if(products) {
         displayAllProductsCart(products).then(
            function () {
-            // Gestion de la quantité
+            // Deletion management
             handlerDelete(products)
-            // Gestion de la suppression
+            // Quantity management
             handlerQuantity(products)
           }
         );
     }
 }
 
- //Création des article
+       /* Creation of articles from data (products) */
+
  async function displayAllProductsCart(resp) 
  {
  
     let totalPriceProducts = 0;
-     // Récupération de la div qui contiendra les articles
+     // Retrieving the div that will contain the articles
     let items = document.getElementById("cart__items");
     items.innerHTML = '';
-    // Pour chaque article
+    // For each item
     for( let i = 0; i < resp.products.length; i++) 
     {
+        // Article data retrieval
         let art =  await getProductById(resp.products[i].id);
         art.color = resp.products[i].color;
         art.quantity = resp.products[i].quantity;
         items.innerHTML += htmlProductCart (art);
-        // Calcul du prix total
+        // Total price calculation
         let price = Number(art.quantity) * Number(art.price); 
+        // Adding the total price
         totalPriceProducts += price;
     }
-    // Affichage du prix total
+    // Total price display
     document.getElementById("totalPrice").innerText = totalPriceProducts;
  }
-// affichage des produits dans le panier
+
+         /* Display of products in the shopping cart */
+         
 function htmlProductCart(article) {
+    // Creating the div that will contain the article
     return `<article class="cart__item" data-id="${article._id}" data-color="${article.color}">
            <div class="cart__item__img">
               <img src="${article.imageUrl}" alt="${article.altTxt}">
@@ -63,7 +68,7 @@ function htmlProductCart(article) {
            <div class="cart__item__content__description">
               <h2>${article.name}</h2>
               <p>${article.color}</p>
-              <p>${article.price}</p>
+              <p>${article.price} €</p>
            </div>
            <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -78,26 +83,30 @@ function htmlProductCart(article) {
   </article>`      
 }
 
-
-// lance la fonction
+// launch function
 getProductsCart();
-//
+
+/** This method allows you to change the amount **/
+
+// quantity change
 function changeQuantity(event)
 {
 const el = event.target;
 const item = el.closest(".cart__item")
 const id = item.dataset.id;
-console.log("id", id)
 const color = item.dataset.color;
 const quantity = el.closest(".itemQuantity")
 const valueQuantity = quantity.value;
+// Updating localstorage
 let myCart = new localStorageCart();
+// Change in quantity
 myCart.updateQuantity(color, id, valueQuantity);
-// Refresh de la page Panier
+// Refresh of the Cart page
  location.reload();
 }
-//
- async function handlerQuantity() {
+
+// it allows you to change the quantity of each item per click
+ function handlerQuantity() {
    const items = document.querySelectorAll(".itemQuantity");
     items.forEach((item) => {
        item.addEventListener("change", (e) => changeQuantity(e)) 
@@ -105,21 +114,21 @@ myCart.updateQuantity(color, id, valueQuantity);
     )
 }
 
-//
+         /** removing an item from the basket **/  
+
 function deleteItem(event)
 {
 const el = event.target;
 const item = el.closest(".cart__item")
-console.log("item", item)
-console.log("el", el)
 let myCart = new localStorageCart();
+// Deletion of article
 myCart.delete(item.dataset.id, item.dataset.color);
-// Refresh de la page Panier
+// Refresh of the Cart page
 location.reload(); 
 }
 
 
-
+// allows you to manage the deletion of an article
 function handlerDelete ()
 {
     const deleteBtn = document.querySelectorAll(".deleteItem");
@@ -129,33 +138,30 @@ function handlerDelete ()
     )
 }
 
+/** This method allows you to validate the form and place the order **/
 
-//* LOGIC SUBMIT FORM ORDER
+//* Logic submit form order
 const submitButton = document.getElementById('order');
-
 submitButton.addEventListener('click', (e) => submitForm(e));
 
 function submitForm(e) 
-{
+{ 
     e.preventDefault();
-    
+    // If the basket is not empty
     if (localStorage.length === 0) {
-
         alert("Votre panier est vide");
-        
         return;
     }
-
+    // Form validation
     if (validationForm()) return;
-
     if (confirmationEmail()) return;
-
-    // const body = makeRequestBody();
 
     fetch('http://localhost:3000/api/products/order', 
     {
+        // Sending data in POST
         method: 'POST',
         body: JSON.stringify({
+            // Retrieving form data
             contact: {
                 firstName: document.getElementById("firstName").value,
                 lastName: document.getElementById("lastName").value,
@@ -163,115 +169,71 @@ function submitForm(e)
                 city: document.getElementById("city").value,
                 email: document.getElementById("email").value
                 },
+                // Retrieval of products from the basket
             products : getProductIdFromLocalStorage()
         }),
+        // Send data in JSON
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
     })
+    // Retrieving the response from the server
     .then((res) => res.json())
     .then((resp) => 
     {
-         const orderId = resp.orderId;
-        
-        localStorage.setItem("orderId", orderId);
-        window.location.href = "confirmation.html" + "?orderId=" + orderId;
+        // Sending server response to localstorage
+         const orderId = resp.orderId; 
+         localStorage.setItem("orderId", orderId);
+         window.location.href = "confirmation.html" + "?orderId=" + orderId;
     })
-    .catch((err) => console.log(err))    
-        
+    // Error management
+    .catch((err) => console.log(err))       
 }
 
-// validation
+// form validation
 function validationForm()
 {
     const form = document.querySelector(".cart__order__form");
-
     const inputs = form.querySelectorAll("input");
-
     inputs.forEach((input) => 
-    { 
+    { // If a field is empty
         if (input.value === "") 
         {
             alert("Veuillez remplir tous les champs");
-
             return true;
         }
-
         return false;
-
     });
-}  
-
-function confirmationEmail() {
-
-    const email = document.querySelector("#email").value;
-
-    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
-
-    if (regex.test(email) === false) {
-
-        alert("Veuillez entrer un email valide");
-
-        return true;
-
-    }
-
-    return false;
-
 } 
 
-// Ne sert plus à rien vu que j'envoi directement les informations dans la requête api/order
-function makeRequestBody() {
-
-    // const form = document.querySelector(".cart__order__form");
-    // const firtName = form.elements.firstName.value;
-    // const lastName = form.elements.lastName.value;
-    // const address  = form.elements.address.value;
-    // const city = form.elements.city.value;
-    // const email = form.elements.email.value;
-
-    let firtName = document.getElementById('firstName');
-    let lastName = document.getElementById('lastName');
-    let address = document.getElementById('address');
-    let city = document.getElementById('city');
-    let email = document.getElementById('email');
-
-    const body = 
-    { 
-        contact: 
-        {
-            firtName: firtName.value,
-            lastName: lastName.value,
-            address: address.value,
-            city: city.value,
-            email: email.value,
-        },
-        products: getProductIdFromLocalStorage()
-          
+// validate the email
+function confirmationEmail() 
+  {
+    // Retrieve email
+    const email = document.querySelector("#email").value;
+    // Regular expression
+    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+   // If the email does not match the regular expression
+    if (regex.test(email) === false) {
+        alert("Veuillez entrer un email valide");
+        return true;
     }
+    return false;
+ }
 
-    return body;
-
-}
-
-
+// Retrieve the id of the products in the basket
 function getProductIdFromLocalStorage()
 {
+    // Retrieve localstorage keys
     const numberOfProducts = localStorage.length;
-
     const ids = [];
-
-    for (let i = 0; i < numberOfProducts; i++) {
-
-        // const key = localStorage.key(i);
-        // const id = key.split('_')[0];
-        // ids.push(id);
-
-        ids.push(products.products[i].id);
-
+    // For each key
+    for (let i = 0; i < numberOfProducts; i++) 
+    {
+    // Retrieve the key
+     ids.push(products.products[i].id);
     }
-    console.log ("product id", ids)
-
+    // Return keys
     return ids;
 }
