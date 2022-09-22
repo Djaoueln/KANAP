@@ -34,7 +34,7 @@ function getProductsCart()
 
  async function displayAllProductsCart(resp) 
  {
- 
+    let totalArticleProducts = 0;
     let totalPriceProducts = 0;
      // Retrieving the div that will contain the articles
     let items = document.getElementById("cart__items");
@@ -51,9 +51,14 @@ function getProductsCart()
         let price = Number(art.quantity) * Number(art.price); 
         // Adding the total price
         totalPriceProducts += price;
+        // Adding the total quantity
+        let TotalArticles = Number(art.quantity);
+        totalArticleProducts += TotalArticles
     }
     // Total price display
     document.getElementById("totalPrice").innerText = totalPriceProducts;
+    // Total number of articles display
+    document.getElementById("totalQuantity").innerText = totalArticleProducts;
  }
 
          /* Display of products in the shopping cart */
@@ -213,7 +218,7 @@ function confirmationEmail()
     // Retrieve email
     const email = document.querySelector("#email").value;
     // Regular expression
-    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
    // If the email does not match the regular expression
     if (regex.test(email) === false) {
         alert("Veuillez entrer un email valide");
